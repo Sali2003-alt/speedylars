@@ -150,6 +150,7 @@ STORAGES = {
     },
 }
 
+CSRF_TRUSTED_ORIGINS = ['https://web-production-38718.up.railway.app']
 #LOGIN_URL = 'login'
 #LOGIN_REDIRECT_URL = 'inicio'
 
