@@ -4,6 +4,11 @@ import requests
 
 
 def enviar_correo_brevo(nombre, correo, telefono, empresa, mensaje):
+    # Verifica que exista la API KEY
+    if not settings.BREVO_API_KEY:
+        print(" ERROR: API KEY no encontrada")
+        return False
+
     url = "https://api.brevo.com/v3/smtp/email"
 
     headers = {
@@ -15,14 +20,14 @@ def enviar_correo_brevo(nombre, correo, telefono, empresa, mensaje):
     data = {
         "sender": {
             "name": "SpeedyLars",
-            "email": "maria.agila9374@utc.edu.ec"  # ✅ correo verificado
+            "email": "maria.agila9374@utc.edu.ec"  # ✅ remitente verificado en Brevo
         },
         "to": [
-            {"email": "agilasali2003@gmail.com"}  # ✅ a dónde llega
+            {"email": "agilasali2003@gmail.com"}  # ✅ correo destino
         ],
         "subject": "Nuevo mensaje SpeedyLars - Contacto",
         "htmlContent": f"""
-            <h2>Nuevo mensaje desde Speedylars</h2>
+            <h2>Nuevo mensaje desde SpeedyLars</h2>
             <p><b>Nombre:</b> {nombre}</p>
             <p><b>Correo:</b> {correo}</p>
             <p><b>Teléfono:</b> {telefono}</p>
@@ -31,8 +36,20 @@ def enviar_correo_brevo(nombre, correo, telefono, empresa, mensaje):
         """
     }
 
-    response = requests.post(url, json=data, headers=headers)
-    print(response.status_code, response.text)
+    try:
+        response = requests.post(url, json=data, headers=headers)
+
+        if response.status_code == 201:
+            print(" Correo enviado correctamente")
+            return True
+        else:
+            print(" Error al enviar correo")
+            print(response.status_code, response.text)
+            return False
+
+    except Exception as e:
+        print(" Error inesperado:", str(e))
+        return False
 
 
 def inicio(request):
@@ -44,7 +61,12 @@ def inicio(request):
         empresa = request.POST.get("empresa")
         mensaje = request.POST.get("mensaje")
 
-        enviar_correo_brevo(nombre, correo, telefono, empresa, mensaje)
+        enviado = enviar_correo_brevo(nombre, correo, telefono, empresa, mensaje)
+
+        if enviado:
+            print("Formulario enviado correctamente")
+        else:
+            print("Falló el envío")
 
         return redirect('inicio')
 
