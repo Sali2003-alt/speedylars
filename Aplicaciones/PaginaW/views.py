@@ -120,7 +120,7 @@ def enviar_correo_brevo(nombre, correo, telefono, empresa, mensaje):
             "email": "speedylarstransport@gmail.com"
         },
         "to": [
-            {"email": "agilasali2003@gmail.com"}
+            {"email": "speedylarstransport@gmail.com"}
         ],
         "subject": f" Nuevo mensaje de {nombre} - SpeedyLars",
         "htmlContent": html_content,
