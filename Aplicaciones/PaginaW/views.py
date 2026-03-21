@@ -117,7 +117,7 @@ def enviar_correo_brevo(nombre, correo, telefono, empresa, mensaje):
     data = {
         "sender": {
             "name": "SpeedyLars",
-            "email": "maria.agila9374@utc.edu.ec"
+            "email": "speedylarstransport@gmail.com"
         },
         "to": [
             {"email": "agilasali2003@gmail.com"}
